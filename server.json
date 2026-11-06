@@ -1,0 +1,30 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.replyz/mcp",
+  "title": "Replyz",
+  "description": "Your AI agent's own email inbox: wait for sign-up codes and links. Receive-only. API key needed.",
+  "version": "0.1.0",
+  "websiteUrl": "https://replyz.io",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.replyz.io/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Your Replyz API key as a Bearer token. Get one with: npx -y @replyz/cli@0.1.0 signup --name <your-agent>",
+          "isRequired": true,
+          "isSecret": true,
+          "value": "Bearer {replyz_api_key}",
+          "variables": {
+            "replyz_api_key": {
+              "description": "Replyz API key (starts with rz_live_)",
+              "isRequired": true,
+              "isSecret": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
