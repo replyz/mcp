@@ -14,9 +14,9 @@ client that speaks Streamable HTTP.
 **Only where a service's terms allow automated sign-ups.** Never use Replyz to create accounts on
 services whose terms forbid automated or bot accounts. Not for bulk, marketing or disposable email.
 
-> **Status: live, private testing.** `https://mcp.replyz.io/mcp` is running, but it needs a Replyz API key,
-> and signups are closed until launch, so new agents can't get one yet. Watch this repo or
-> https://replyz.io for the launch.
+> **Status: early access.** `https://mcp.replyz.io/mcp` is running and needs a Replyz API key. Whether new
+> signups are open right now is shown on https://replyz.io; if the signup command below answers
+> `signups_disabled`, they are closed.
 
 - **Endpoint:** `https://mcp.replyz.io/mcp` (remote, Streamable HTTP, stateless)
 - **Protocol:** MCP 2026-07-28 and 2025-11-25 (older 2025 revisions work too)
@@ -25,12 +25,11 @@ services whose terms forbid automated or bot accounts. Not for bulk, marketing o
 
 ## Get an API key
 
-**Signups are closed until launch**, so this command doesn't work for new agents today. It is how
-you will get a key once signups open. The MCP server has no signup tool: sign up once with the CLI,
-which saves the key for you:
+The MCP server has no signup tool: sign up once with the CLI, which saves the key for you. If it answers
+`signups_disabled`, signups are closed right now (see https://replyz.io):
 
 ```bash
-npx -y @replyz/cli@0.1.0 signup --name <your-agent> --json
+npx -y @replyz/cli@0.2.0 signup --name <your-agent> --json
 ```
 
 Your account starts as a 7-day sandbox with one inbox on `youreplyz.com`.
@@ -38,11 +37,11 @@ Your account starts as a 7-day sandbox with one inbox on `youreplyz.com`.
 ## Configure your client
 
 The examples read the key from the `REPLYZ_API_KEY` environment variable, so it never sits in a
-file you might commit. `npx -y @replyz/cli@0.1.0 mcp install --client claude-code` (or `cursor`)
+file you might commit. `npx -y @replyz/cli@0.2.0 mcp install --client claude-code` (or `cursor`)
 adds the server for you with the saved key.
 
 > **Untested.** These examples follow each client's documented configuration for remote HTTP servers.
-> We have not run them against the live server with a real key yet (signups are closed), and we don't
+> We have not tested each client against the live server, and we don't
 > claim that any particular client works. If one doesn't, check your client's documentation and open an
 > issue here.
 
@@ -88,9 +87,9 @@ bearer_token_env_var = "REPLYZ_API_KEY"
 | `read_message(message_id)` | One message in full, with its safety signals. Marks it as read |
 | `wait_for_email(inbox_id, from?, subject?, since?, exclude_returned?, timeout?)` | Waits up to 45 s for mail; mail from the last 10 minutes counts. Answers `status: "timeout"` when nothing came |
 | `get_verification(inbox_id, from?, since?, timeout?)` | Waits up to 45 s for a verification email and returns its code and/or link |
-| `email_my_human(inbox_id, subject, text)` | Not available yet: answers the error `sender_unavailable` |
+| `email_my_human(inbox_id, subject, text)` | One short plain-text email to the human who claimed the account, and only to them (at most 10 a day; queued, not delivered). Until Replyz switches sending on it answers `sender_unavailable`, and `not_claimed` for an account that isn't claimed yet |
 
-Replyz is receive-only for now: no tool sends or replies to email.
+Replyz receives mail. The only mail a tool can send is `email_my_human`, to the human who claimed the account; nothing sends or replies to anyone else.
 
 Annotations: `account_status`, `list_inboxes` and `list_messages` are read-only. `read_message`, `wait_for_email` and
 `get_verification` are not, because the mail they return is marked as read (nothing is ever deleted: `destructiveHint` is
@@ -110,7 +109,7 @@ links in mail.
 
 ## Links
 
-- Website: https://replyz.io · Docs for agents: https://docs.replyz.io/llms.txt
+- Website: https://replyz.io · Docs: https://docs.replyz.io
 - CLI: https://github.com/replyz/cli
 - Security: security@replyz.io · Everything else: hello@replyz.io
 
