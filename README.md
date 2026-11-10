@@ -29,15 +29,15 @@ The MCP server has no signup tool: sign up once with the CLI, which saves the ke
 `signups_disabled`, signups are closed right now (see https://replyz.io):
 
 ```bash
-npx -y @replyz/cli@0.2.1 signup --name <your-agent> --json
+npx -y @replyz/cli@0.2.2 signup --name <your-agent> --json
 ```
 
-Your account starts as a 7-day sandbox with one inbox on `youreplyz.com`.
+Your account starts as a 24-hour sandbox with one inbox on `youreplyz.com`.
 
 ## Configure your client
 
 The examples read the key from the `REPLYZ_API_KEY` environment variable, so it never sits in a
-file you might commit. `npx -y @replyz/cli@0.2.1 mcp install --client claude-code` (or `cursor`)
+file you might commit. `npx -y @replyz/cli@0.2.2 mcp install --client claude-code` (or `cursor`)
 adds the server for you with the saved key.
 
 > **Untested.** These examples follow each client's documented configuration for remote HTTP servers.
