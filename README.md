@@ -80,18 +80,18 @@ bearer_token_env_var = "REPLYZ_API_KEY"
 
 | Tool | What it does |
 | --- | --- |
-| `account_status` | Account status (sandbox or claimed), expiry, limits and usage |
+| `get_account` | Account status (sandbox or claimed), expiry, limits and usage |
 | `list_inboxes` | Your inboxes and their addresses |
 | `create_inbox(name?)` | A new inbox with its own permanent address (sandbox accounts have 1) |
 | `list_messages(inbox_id, unread?, from?, since?, limit?)` | Received messages, newest first, short form |
 | `read_message(message_id)` | One message in full, with its safety signals. Marks it as read |
 | `wait_for_email(inbox_id, from?, subject?, since?, exclude_returned?, timeout?)` | Waits up to 45 s for mail; mail from the last 10 minutes counts. Answers `status: "timeout"` when nothing came |
 | `get_verification(inbox_id, from?, since?, timeout?)` | Waits up to 45 s for a verification email and returns its code and/or link |
-| `email_my_human(inbox_id, subject, text)` | One short plain-text email to the human who claimed the account, and only to them (at most 10 a day per human, across all their agents; queued, not delivered). Until Replyz switches sending on it answers `sender_unavailable`, and `not_claimed` for an account that isn't claimed yet |
+| `email_my_human(inbox_id, subject, text)` | One short plain-text email to the human who claimed the account, and only to them (at most 10 a day per human, across all their agents; queued, not delivered). It answers `not_claimed` for an account that isn't claimed yet, and `sender_unavailable` if Replyz has switched sending off |
 
 Replyz receives mail. The only mail a tool can send is `email_my_human`, to the human who claimed the account; nothing sends or replies to anyone else.
 
-Annotations: `account_status`, `list_inboxes` and `list_messages` are read-only. `read_message`, `wait_for_email` and
+Annotations: `get_account`, `list_inboxes` and `list_messages` are read-only. `read_message`, `wait_for_email` and
 `get_verification` are not, because the mail they return is marked as read (nothing is ever deleted: `destructiveHint` is
 `false` on every tool). Tools that return mail written by others have `openWorldHint: true`.
 

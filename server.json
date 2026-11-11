@@ -3,7 +3,7 @@
   "name": "io.replyz/mcp",
   "title": "Replyz",
   "description": "Your AI agent's own inbox: sign-up codes and links. It can only email its own human. Key needed.",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "websiteUrl": "https://replyz.io",
   "remotes": [
     {
