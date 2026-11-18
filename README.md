@@ -88,8 +88,9 @@ bearer_token_env_var = "REPLYZ_API_KEY"
 | `wait_for_email(inbox_id, from?, subject?, since?, exclude_returned?, timeout?)` | Waits up to 45 s for mail; mail from the last 10 minutes counts. Answers `status: "timeout"` when nothing came |
 | `get_verification(inbox_id, from?, since?, timeout?)` | Waits up to 45 s for a verification email and returns its code and/or link |
 | `email_my_human(inbox_id, subject, text)` | One short plain-text email to the human who claimed the account, and only to them (at most 10 a day per human, across all their agents; queued, not delivered). It answers `not_claimed` for an account that isn't claimed yet, and `sender_unavailable` if Replyz has switched sending off |
+| `reply_to_email(message_id, text)` | One plain-text reply to the sender of a received message. Listed only for accounts on terms 2026-11-21 or later (`terms_required` otherwise), so not every account sees it. There is no recipient input: the recipient is that message's authenticated sender, and Reply-To and CC are ignored. Claimed accounts only, for mail from DMARC-aligned senders (`sender_trust = aligned_pass`) that wrote to this inbox in the last 30 days. Daily caps: 50 per account, 20 per inbox, 10 per conversation, 50 per owner. Answers `queued` (accepted, not yet delivered). Account API keys only: not available to inbox keys or OAuth connections |
 
-Replyz receives mail. The only mail a tool can send is `email_my_human`, to the human who claimed the account; nothing sends or replies to anyone else.
+Replyz receives mail. Two tools send mail: `email_my_human`, to the human who claimed the account, and `reply_to_email`, to the sender of a message the inbox received. No tool writes first to anyone but that human.
 
 Annotations: `get_account`, `list_inboxes` and `list_messages` are read-only. `read_message`, `wait_for_email` and
 `get_verification` are not, because the mail they return is marked as read (nothing is ever deleted: `destructiveHint` is
